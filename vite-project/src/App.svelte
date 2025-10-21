@@ -25,8 +25,15 @@
             body {
                 margin: 0;
                 font-family:
-                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    Roboto,
+                    Oxygen,
+                    Ubuntu,
+                    Cantarell,
+                    "Open Sans",
+                    "Helvetica Neue",
                     sans-serif;
                 background-color: var(--background-dark);
                 color: var(--primary-text);
@@ -45,7 +52,7 @@
                 padding: 1rem 2rem;
                 font-size: 2rem;
                 font-weight: bold;
-                color: var(--accent-color);
+                color: var(--primary-text);
                 flex-shrink: 0;
                 border-bottom: 2px solid var(--border-color);
             }
@@ -91,6 +98,7 @@
                 color: var(--secondary-text);
             }
 
+            /* This class is now used for BOTH dropdowns */
             .layer-select {
                 padding: 12px;
                 border-radius: 8px;
@@ -102,6 +110,7 @@
                 transition:
                     border-color 0.2s ease,
                     background-color 0.2s ease;
+                width: 100%; /* Make dropdowns full width */
             }
 
             .layer-select:hover {
@@ -113,38 +122,10 @@
                 border-color: var(--accent-color);
             }
 
-            /* Body Parts Card */
-            .body-parts-list {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                overflow-y: auto;
-                padding-right: 10px;
-            }
-
-            .part-item {
-                padding: 15px;
-                border: 2px solid #444444;
-                border-radius: 8px;
-                cursor: pointer;
-                font-weight: 500;
-                text-transform: capitalize;
-                transition:
-                    background-color 0.2s ease,
-                    border-color 0.2s ease;
-                user-select: none;
-            }
-
-            .part-item:hover {
-                background-color: #2a2a2a;
-                border-color: #666666;
-            }
-
-            .part-item.selected {
-                background-color: var(--accent-color);
-                color: white;
-                border-color: var(--accent-hover);
-            }
+            /*
+             * * CSS for .body-parts-list, .part-item, and .part-item.selected 
+             * has been removed as it's no longer needed.
+             * */
 
             /* Fun Facts Card */
             .fun-facts-card {
@@ -165,7 +146,7 @@
 
             .nav-buttons {
                 display: flex;
-                justify-content: space-between;
+                justify-content: left;
                 margin-top: 20px;
                 flex-shrink: 0;
             }
@@ -197,38 +178,48 @@
 
             <div class="grid-container">
                 <div class="card">
-                    <h2>System Layer</h2>
-                    <div class="layer-controls">
-                        <label for="layer-selector"
-                            >Select a body system to explore:</label
-                        >
-                        <select id="layer-selector" class="layer-select"
-                        ></select>
-                    </div>
+                    <h2>Environment Information</h2>
                 </div>
 
                 <div class="card">
                     <h2>Body Parts</h2>
-                    <div id="body-parts-list" class="body-parts-list"></div>
+                    <select
+                        id="body-part-selector"
+                        class="layer-select"
+                    ></select>
+                    <!-- <div class="sketchfab-embed-wrapper"> <iframe title="Human Skull (Replica)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/7a22ca606b004c12abb377dc511c31f9/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/human-skull-replica-7a22ca606b004c12abb377dc511c31f9?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Human Skull (Replica) </a> by <a href="https://sketchfab.com/RISDNaturelab?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> RISD Nature Lab </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div> -->
+                    <div class="sketchfab-embed-wrapper"> <iframe title="Anatomy human rib cage" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share width="640" height="480" src="https://sketchfab.com/models/0f1aa77bf02e4d438f8630bd6c53b12e/embed?ui_theme=dark"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/anatomy-human-rib-cage-0f1aa77bf02e4d438f8630bd6c53b12e?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Anatomy human rib cage </a> by <a href="https://sketchfab.com/FrancescoMilanese?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> FrancescoMilanese </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
                 </div>
 
                 <div class="card controls-card">
                     <h2 id="controls-title">Information</h2>
                     <p>Select a system and a body part to learn more.</p>
+                    <div class="nav-buttons">
+                        <button
+                            id="prev-fact-btn"
+                            aria-label="Previous fact"
+                        >
+                            &larr;</button
+                        >
+                        <button
+                            id="next-fact-btn"
+                            aria-label="Next fact"
+                        >
+                            &rarr;</button
+                        >
+                        <div class="layer-controls">
+                            <select
+                                id="layer-selector"
+                                class="layer-select"
+                            ></select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card fun-facts-card">
                     <h2>Fun Fact</h2>
                     <div class="fact-display">
                         <p id="fact-text">Welcome to the Anatomy Explorer!</p>
-                    </div>
-                    <div class="nav-buttons">
-                        <button id="prev-fact-btn" aria-label="Previous fact"
-                            >&larr;</button
-                        >
-                        <button id="next-fact-btn" aria-label="Next fact"
-                            >&rarr;</button
-                        >
                     </div>
                 </div>
             </div>
@@ -238,29 +229,29 @@
             document.addEventListener("DOMContentLoaded", () => {
                 const anatomyData = {
                     skin: {
-                        head: [
+                        Head: [
                             "The skin on your eyelids is the thinnest on your body.",
                             "Your scalp has about 100,000 hair follicles.",
                             "Facial skin has more oil glands than any other part of your body.",
                         ],
-                        arm: [
+                        Arms: [
                             "The skin on your elbows is often thicker and darker due to friction and pressure.",
                             "Goosebumps are caused by tiny muscles flexing in the skin at the base of each hair.",
                             "Your fingerprints are unique patterns of ridges on the skin of your fingertips.",
                         ],
-                        torso: [
+                        Torso: [
                             "The skin on your back is among the thickest on your body.",
                             "Your belly button is home to a whole ecosystem of bacteria.",
                             "Stretch marks can appear on the abdomen when skin grows or shrinks quickly.",
                         ],
-                        leg: [
+                        Legs: [
                             "The skin on the soles of your feet is the thickest on your body.",
                             "Shaving doesn't make hair grow back thicker; it just cuts it at a blunt angle.",
                             "Leg skin has fewer oil glands than facial skin, making it prone to dryness.",
                         ],
                     },
                     muscle: {
-                        head: [
+                        skull: [
                             "It takes more muscles to frown (43) than it does to smile (17).",
                             "The masseter, or jaw muscle, is the strongest muscle by weight in the human body.",
                             "Your eyes have muscles that are constantly moving, even when you sleep.",
@@ -337,8 +328,11 @@
                 let currentFactIndex = 0;
 
                 const layerSelector = document.getElementById("layer-selector");
-                const bodyPartsList =
-                    document.getElementById("body-parts-list");
+                
+                // --- CHANGED ---
+                // Get the new select element
+                const bodyPartSelector = document.getElementById("body-part-selector");
+                
                 const controlsTitle = document.getElementById("controls-title");
                 const factText = document.getElementById("fact-text");
                 const prevFactBtn = document.getElementById("prev-fact-btn");
@@ -351,35 +345,22 @@
                     // Update controls title
                     controlsTitle.textContent = `${selectedPart} (${currentLayer})`;
 
-                    // Highlight the selected body part
-                    const partItems =
-                        bodyPartsList.querySelectorAll(".part-item");
-                    partItems.forEach((item) => {
-                        item.classList.toggle(
-                            "selected",
-                            item.dataset.part === selectedPart,
-                        );
-                    });
+                    // --- CHANGED ---
+                    // Set the dropdown's value to match the state
+                    bodyPartSelector.value = selectedPart;
                 }
 
-                // Populates the body parts list based on the current layer
+                // --- CHANGED ---
+                // This function now populates the <select> element with <option>s
                 function renderBodyParts() {
-                    bodyPartsList.innerHTML = ""; // Clear existing parts
+                    bodyPartSelector.innerHTML = ""; // Clear existing options
                     const parts = Object.keys(anatomyData[currentLayer]);
 
                     parts.forEach((part) => {
-                        const partItem = document.createElement("div");
-                        partItem.className = "part-item";
-                        partItem.textContent = part;
-                        partItem.dataset.part = part; // Store part name in data attribute
-
-                        partItem.addEventListener("click", () => {
-                            selectedPart = part;
-                            currentFactIndex = 0;
-                            updateDisplay();
-                        });
-
-                        bodyPartsList.appendChild(partItem);
+                        const option = document.createElement("option");
+                        option.value = part;
+                        option.textContent = part;
+                        bodyPartSelector.appendChild(option);
                     });
                 }
 
@@ -398,6 +379,14 @@
                     selectedPart = Object.keys(anatomyData[currentLayer])[0];
                     currentFactIndex = 0;
                     renderBodyParts();
+                    updateDisplay();
+                });
+
+                // --- ADDED ---
+                // Add event listener for the new body part dropdown
+                bodyPartSelector.addEventListener("change", (e) => {
+                    selectedPart = e.target.value;
+                    currentFactIndex = 0;
                     updateDisplay();
                 });
 
