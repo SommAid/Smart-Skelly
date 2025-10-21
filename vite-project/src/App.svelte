@@ -55,6 +55,42 @@
                 color: var(--primary-text);
                 flex-shrink: 0;
                 border-bottom: 2px solid var(--border-color);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .menu-button {
+                background: none;
+                border: 2px solid var(--border-color);
+                color: var(--primary-text);
+                font-size: 1.5rem;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                padding: 0.25rem 0.75rem;
+                line-height: 1;
+            }
+            .menu-button:hover {
+                background-color: var(--border-color);
+                color: var(--accent-color);
+            }
+
+            .menu-controls {
+                display: flex;
+                align-items: center;
+                gap: 15px; 
+            }
+
+            .mode-indicator {
+                font-size: 1rem;
+                font-weight: 500;
+                color: var(--secondary-text);
+                transition: color 0.2s ease;
+            }
+
+            .mode-indicator.instructor-mode {
+                color: var(--secondary-text);
             }
 
             .grid-container {
@@ -98,7 +134,6 @@
                 color: var(--secondary-text);
             }
 
-            /* This class is now used for BOTH dropdowns */
             .layer-select {
                 padding: 12px;
                 border-radius: 8px;
@@ -110,7 +145,7 @@
                 transition:
                     border-color 0.2s ease,
                     background-color 0.2s ease;
-                width: 100%; /* Make dropdowns full width */
+                width: 100%;
             }
 
             .layer-select:hover {
@@ -121,11 +156,6 @@
                 outline: none;
                 border-color: var(--accent-color);
             }
-
-            /*
-             * * CSS for .body-parts-list, .part-item, and .part-item.selected 
-             * has been removed as it's no longer needed.
-             * */
 
             /* Fun Facts Card */
             .fun-facts-card {
@@ -170,12 +200,165 @@
             .nav-buttons button:hover {
                 background-color: #444444;
             }
+
+            /* 3D model viewer */
+            .model-viewer {
+                display: none;
+                flex-grow: 1;
+                width: 100%;
+                margin-top: 5px;
+                flex-direction: column;
+                min-height: 0;
+            }
+
+            .model-viewer.visible {
+                display: flex;
+            }
+
+            .model-viewer iframe {
+                width: 100%;
+                flex-grow: 1;
+                border: none;
+                min-height: 0;
+            }
+
+            .model-viewer p {
+                color: var(--secondary-text) !important;
+                font-size: 12px !important;
+                margin: 2px 0 0 0 !important;
+                flex-shrink: 0;
+            }
+            .model-viewer p a {
+                color: var(--accent-color) !important;
+            }
+
+            .sidebar-overlay {
+                display: none; 
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.7);
+                justify-content: flex-end; 
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .sidebar-overlay.visible {
+                display: flex;
+                opacity: 1;
+            }
+
+            .sidebar-content {
+                background-color: var(--surface-dark);
+                height: 100%;
+                width: 350px;
+                max-width: 90%; 
+                padding: 24px;
+                border-left: 1px solid var(--border-color);
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .sidebar-overlay.visible .sidebar-content {
+                transform: translateX(0);
+            }
+
+            .sidebar-close {
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                font-size: 2.5rem;
+                color: var(--secondary-text);
+                cursor: pointer;
+                line-height: 1;
+            }
+            .sidebar-close:hover {
+                color: var(--primary-text);
+            }
+
+            .toggle-switch {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .toggle-input {
+                display: none; 
+            }
+
+            .toggle-label {
+                display: block;
+                width: 200px;
+                height: 50px;
+                background-color: var(--border-color);
+                border-radius: 25px;
+                position: relative;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+            .toggle-label::after {
+                content: '';
+                position: absolute;
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background-color: var(--primary-text);
+                top: 3px;
+                left: 3px;
+                transition: transform 0.2s ease;
+            }
+
+            .toggle-label::before {
+                content: 'Student';
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--primary-text);
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+
+            .toggle-input:checked + .toggle-label {
+                background-color: var(--accent-color);
+            }
+
+            .toggle-input:checked + .toggle-label::after {
+                transform: translateX(150px);
+            }
+
+            .toggle-input:checked + .toggle-label::before {
+                content: 'Instructor';
+                left: 20px;
+                right: auto;
+                color: white;
+            }
         </style>
     </head>
     <body>
         <div class="app-container">
-            <div class="menu-bar">Smart Skeleton</div>
+            <div class="menu-bar">
+                <span>Smart Skeleton</span>
 
+                <div class="menu-controls">
+                    <span id="mode-indicator" class="mode-indicator">Student</span>
+
+                    <button
+                        id="settings-btn"
+                        class="menu-button"
+                        aria-label="Settings"
+                    >
+                        ⚙️
+                    </button>
+                </div>
+            </div>
             <div class="grid-container">
                 <div class="card">
                     <h2>Environment Information</h2>
@@ -187,8 +370,90 @@
                         id="body-part-selector"
                         class="layer-select"
                     ></select>
-                    <!-- <div class="sketchfab-embed-wrapper"> <iframe title="Human Skull (Replica)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/7a22ca606b004c12abb377dc511c31f9/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/human-skull-replica-7a22ca606b004c12abb377dc511c31f9?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Human Skull (Replica) </a> by <a href="https://sketchfab.com/RISDNaturelab?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> RISD Nature Lab </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div> -->
-                    <div class="sketchfab-embed-wrapper"> <iframe title="Anatomy human rib cage" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share width="640" height="480" src="https://sketchfab.com/models/0f1aa77bf02e4d438f8630bd6c53b12e/embed?ui_theme=dark"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/anatomy-human-rib-cage-0f1aa77bf02e4d438f8630bd6c53b12e?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Anatomy human rib cage </a> by <a href="https://sketchfab.com/FrancescoMilanese?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> FrancescoMilanese </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+
+                    <div
+                        id="skull-model"
+                        class="sketchfab-embed-wrapper model-viewer"
+                    >
+                        <iframe
+                            title="Human Skull (Replica)"
+                            frameborder="0"
+                            allowfullscreen
+                            mozallowfullscreen="true"
+                            webkitallowfullscreen="true"
+                            allow="autoplay; fullscreen; xr-spatial-tracking"
+                            xr-spatial-tracking
+                            execution-while-out-of-viewport
+                            execution-while-not-rendered
+                            web-share
+                            src="https://sketchfab.com/models/7a22ca606b004c12abb377dc511c31f9/embed"
+                        >
+                        </iframe>
+                        <p>
+                            <a
+                                href="https://sketchfab.com/3d-models/human-skull-replica-7a22ca606b004c12abb377dc511c31f9?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
+                                target="_blank"
+                                rel="nofollow"
+                            >
+                            </a>
+                            <a
+                                href="https://sketchfab.com/RISDNaturelab?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
+                                target="_blank"
+                                rel="nofollow"
+                            >
+                            </a>
+                            <a
+                                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
+                                target="_blank"
+                                rel="nofollow"
+                            ></a
+                            >
+                        </p>
+                    </div>
+
+                    <div
+                        id="rib-cage-model"
+                        class="sketchfab-embed-wrapper model-viewer"
+                    >
+                        <iframe
+                            title="Anatomy human rib cage"
+                            frameborder="0"
+                            allowfullscreen
+                            mozallowfullscreen="true"
+                            webkitallowfullscreen="true"
+                            allow="autoplay; fullscreen; xr-spatial-tracking"
+                            xr-spatial-tracking
+                            execution-while-out-of-viewport
+                            execution-while-not-rendered
+                            web-share
+                            src="https://sketchfab.com/models/0f1aa77bf02e4d438f8630bd6c53b12e/embed?ui_theme=dark"
+                        >
+                        </iframe>
+                        <p>
+                            <a
+                                href="https://sketchfab.com/3d-models/anatomy-human-rib-cage-0f1aa77bf02e4d438f8630bd6c53b12e?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
+                                target="_blank"
+                                rel="nofollow"
+                            >
+                                Anatomy human rib cage
+                            </a>
+                            by
+                            <a
+                                href="https://sketchfab.com/FrancescoMilanese?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
+                                target="_blank"
+                                rel="nofollow"
+                            >
+                                FrancescoMilanese
+                            </a>
+                            on
+                            <a
+                                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
+                                target="_blank"
+                                rel="nofollow"
+                            >Sketchfab</a
+                            >
+                        </p>
+                    </div>
                 </div>
 
                 <div class="card controls-card">
@@ -225,6 +490,24 @@
             </div>
         </div>
 
+        <div id="sidebar-overlay" class="sidebar-overlay">
+            <div class="sidebar-content">
+                <span
+                    class="sidebar-close"
+                    id="sidebar-close-btn"
+                    >&times;</span
+                >
+                <h2>Settings</h2>
+                <div class="toggle-switch">
+                    <input
+                        type="checkbox"
+                        id="mode-toggle"
+                        class="toggle-input"
+                    />
+                    <label for="mode-toggle" class="toggle-label"></label>
+                </div>
+            </div>
+        </div>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const anatomyData = {
@@ -323,37 +606,60 @@
                     },
                 };
 
-                let currentLayer = Object.keys(anatomyData)[0]; // Default to first layer ('skin')
-                let selectedPart = Object.keys(anatomyData[currentLayer])[0]; // Default to first part of that layer
+                let currentLayer = Object.keys(anatomyData)[0];
+                let selectedPart = Object.keys(anatomyData[currentLayer])[0];
                 let currentFactIndex = 0;
 
-                const layerSelector = document.getElementById("layer-selector");
-                
-                // --- CHANGED ---
-                // Get the new select element
-                const bodyPartSelector = document.getElementById("body-part-selector");
-                
+                const layerSelector =
+                    document.getElementById("layer-selector");
+                const bodyPartSelector =
+                    document.getElementById("body-part-selector");
+
+                const skullModel = document.getElementById("skull-model");
+                const ribCageModel = document.getElementById("rib-cage-model");
+
                 const controlsTitle = document.getElementById("controls-title");
                 const factText = document.getElementById("fact-text");
                 const prevFactBtn = document.getElementById("prev-fact-btn");
                 const nextFactBtn = document.getElementById("next-fact-btn");
 
+                const settingsBtn = document.getElementById("settings-btn");
+                const settingsSidebar = document.getElementById("sidebar-overlay");
+                const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
+                const modeToggle = document.getElementById("mode-toggle");
+                const modeIndicator = document.getElementById("mode-indicator");
+
                 function updateDisplay() {
                     const facts = anatomyData[currentLayer][selectedPart];
                     factText.textContent = facts[currentFactIndex];
-
-                    // Update controls title
                     controlsTitle.textContent = `${selectedPart} (${currentLayer})`;
-
-                    // --- CHANGED ---
-                    // Set the dropdown's value to match the state
                     bodyPartSelector.value = selectedPart;
+
+                    skullModel.classList.remove("visible");
+                    ribCageModel.classList.remove("visible");
+
+                    const part = selectedPart.toLowerCase();
+
+                    if (
+                        part === "head" ||
+                        part === "skull" ||
+                        part === "brain"
+                    ) {
+                        skullModel.classList.add("visible");
+                    } else if (
+                        part === "torso" ||
+                        part === "rib cage" ||
+                        part === "heart" ||
+                        part === "lungs" ||
+                        part === "stomach" ||
+                        part === "liver"
+                    ) {
+                        ribCageModel.classList.add("visible");
+                    }
                 }
 
-                // --- CHANGED ---
-                // This function now populates the <select> element with <option>s
                 function renderBodyParts() {
-                    bodyPartSelector.innerHTML = ""; // Clear existing options
+                    bodyPartSelector.innerHTML = "";
                     const parts = Object.keys(anatomyData[currentLayer]);
 
                     parts.forEach((part) => {
@@ -382,15 +688,12 @@
                     updateDisplay();
                 });
 
-                // --- ADDED ---
-                // Add event listener for the new body part dropdown
                 bodyPartSelector.addEventListener("change", (e) => {
                     selectedPart = e.target.value;
                     currentFactIndex = 0;
                     updateDisplay();
                 });
 
-                // Handle next fact button
                 nextFactBtn.addEventListener("click", () => {
                     const totalFacts =
                         anatomyData[currentLayer][selectedPart].length;
@@ -398,13 +701,40 @@
                     updateDisplay();
                 });
 
-                // Handle previous fact button
                 prevFactBtn.addEventListener("click", () => {
                     const totalFacts =
                         anatomyData[currentLayer][selectedPart].length;
                     currentFactIndex =
                         (currentFactIndex - 1 + totalFacts) % totalFacts;
                     updateDisplay();
+                });
+
+                settingsBtn.addEventListener("click", () => {
+                    settingsSidebar.classList.add("visible");
+                });
+
+                sidebarCloseBtn.addEventListener("click", () => {
+                    settingsSidebar.classList.remove("visible");
+                });
+
+                settingsSidebar.addEventListener("click", (e) => {
+                    if (e.target === settingsSidebar) {
+                        settingsSidebar.classList.remove("visible");
+                    }
+                });
+
+                modeToggle.addEventListener("change", (e) => {
+                    const isInstructor = e.target.checked;
+                    
+                    if (isInstructor) {
+                        modeIndicator.textContent = "Instructor";
+                        modeIndicator.classList.add("instructor-mode");
+                    } else {
+                        modeIndicator.textContent = "Student";
+                        modeIndicator.classList.remove("instructor-mode");
+                    }
+                    
+                    console.log(`Mode switched to: ${modeIndicator.textContent}`);
                 });
 
                 function init() {
