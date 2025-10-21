@@ -1,0 +1,35 @@
+{
+    "skin": {
+        "Head": [
+            "Example Upload File Head Skin"
+        ],
+        "Arms": [
+            "Example Upload File Arms Skin"
+        ],
+        "Torso": [
+            "Example Upload File Torso Skin"
+        ],
+        "Legs": [
+            "Example Upload File Legs Skin"
+        ]
+    },
+    "bone": {
+        "skull": [
+            "Example Upload File skull bone"
+        ],
+        "rib cage": [
+            "Example Upload File rib cage Bone"
+        ]
+    },
+    "organ": {
+        "brain": [
+            "Example Upload File brain organ"
+        ],
+        "heart": [
+            "Example Upload File heart organ"
+        ],
+        "liver": [
+            "Example Upload File liver organ"
+        ]
+    }
+}

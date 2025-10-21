@@ -1,0 +1,53 @@
+{
+    "skin": {
+        "Head": [
+            "The skin on your eyelids is the thinnest on your body.",
+            "Your scalp has about 100,000 hair follicles.",
+            "Facial skin has more oil glands than any other part of your body."
+        ],
+        "Arms": [
+            "The skin on your elbows is often thicker and darker due to friction and pressure.",
+            "Goosebumps are caused by tiny muscles flexing in the skin at the base of each hair.",
+            "Your fingerprints are unique patterns of ridges on the skin of your fingertips."
+        ],
+        "Torso": [
+            "The skin on your back is among the thickest on your body.",
+            "Your belly button is home to a whole ecosystem of bacteria.",
+            "Stretch marks can appear on the abdomen when skin grows or shrinks quickly."
+        ],
+        "Legs": [
+            "The skin on the soles of your feet is the thickest on your body.",
+            "Shaving doesn't make hair grow back thicker; it just cuts it at a blunt angle.",
+            "Leg skin has fewer oil glands than facial skin, making it prone to dryness."
+        ]
+    },
+    "bone": {
+        "skull": [
+            "The human skull is made up of 22 different bones, 8 in the cranium and 14 in the face.",
+            "Of the 22 bones in the skull, only the mandible (jaw bone) is movable.",
+            "Babies are born with soft spots (fontanelles) in their skulls that fuse together over time."
+        ],
+        "rib cage": [
+            "The rib cage protects your heart and lungs.",
+            "Most people have 12 pairs of ribs, making 24 ribs in total.",
+            "The bottom two pairs of ribs are called 'floating ribs' because they don't connect to the sternum."
+        ]
+    },
+    "organ": {
+        "brain": [
+            "The human brain weighs about 3 pounds but uses 20% of the body's oxygen and calories.",
+            "Information in the brain travels at speeds of up to 268 miles per hour.",
+            "Your brain is more active at night than during the day."
+        ],
+        "heart": [
+            "The average adult heart beats about 100,000 times each day.",
+            "Your heart pumps about 2,000 gallons of blood every day.",
+            "The sound of your heartbeat is caused by the heart valves opening and closing."
+        ],
+        "liver": [
+            "The liver is the largest internal organ and can regenerate itself from as little as 25% of its tissue.",
+            "Your liver performs over 500 different functions, including filtering toxins from your blood.",
+            "At any given moment, your liver holds about 10% of your body's total blood."
+        ]
+    }
+}

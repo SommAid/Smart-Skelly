@@ -79,7 +79,7 @@
             .menu-controls {
                 display: flex;
                 align-items: center;
-                gap: 15px; 
+                gap: 15px;
             }
 
             .mode-indicator {
@@ -90,7 +90,7 @@
             }
 
             .mode-indicator.instructor-mode {
-                color: var(--secondary-text);
+                color: var(--accent-color);
             }
 
             .grid-container {
@@ -155,6 +155,32 @@
             .layer-select:focus {
                 outline: none;
                 border-color: var(--accent-color);
+            }
+            
+            #upload-container {
+                display: none; /* Hidden by default */
+                margin-top: 1.5rem;
+            }
+            body.instructor-mode-active #upload-container {
+                display: block; /* Show the container */
+            }
+            .upload-btn {
+                display: inline-block;
+                background-color: var(--accent-color);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                text-align: center;
+                margin-top: 10px;
+                transition: background-color 0.2s ease;
+            }
+            .upload-btn:hover {
+                background-color: var(--accent-hover);
+            }
+            #json-upload {
+                display: none;
             }
 
             /* Fun Facts Card */
@@ -233,14 +259,14 @@
             }
 
             .sidebar-overlay {
-                display: none; 
+                display: none;
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100vw;
                 height: 100vh;
                 background-color: rgba(0, 0, 0, 0.7);
-                justify-content: flex-end; 
+                justify-content: flex-end;
                 z-index: 1000;
                 opacity: 0;
                 transition: opacity 0.3s ease-in-out;
@@ -255,7 +281,7 @@
                 background-color: var(--surface-dark);
                 height: 100%;
                 width: 350px;
-                max-width: 90%; 
+                max-width: 90%;
                 padding: 24px;
                 border-left: 1px solid var(--border-color);
                 box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
@@ -289,7 +315,7 @@
             }
 
             .toggle-input {
-                display: none; 
+                display: none;
             }
 
             .toggle-label {
@@ -362,6 +388,11 @@
             <div class="grid-container">
                 <div class="card">
                     <h2>Environment Information</h2>
+                    <div id="upload-container">
+                        <p>Upload a new set of anatomy facts.</p>
+                        <label for="json-upload" class="upload-btn">Upload JSON File</label>
+                        <input type="file" id="json-upload" accept="application/json">
+                    </div>
                 </div>
 
                 <div class="card">
@@ -379,36 +410,9 @@
                             title="Human Skull (Replica)"
                             frameborder="0"
                             allowfullscreen
-                            mozallowfullscreen="true"
-                            webkitallowfullscreen="true"
-                            allow="autoplay; fullscreen; xr-spatial-tracking"
-                            xr-spatial-tracking
-                            execution-while-out-of-viewport
-                            execution-while-not-rendered
-                            web-share
                             src="https://sketchfab.com/models/7a22ca606b004c12abb377dc511c31f9/embed"
                         >
                         </iframe>
-                        <p>
-                            <a
-                                href="https://sketchfab.com/3d-models/human-skull-replica-7a22ca606b004c12abb377dc511c31f9?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
-                                target="_blank"
-                                rel="nofollow"
-                            >
-                            </a>
-                            <a
-                                href="https://sketchfab.com/RISDNaturelab?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
-                                target="_blank"
-                                rel="nofollow"
-                            >
-                            </a>
-                            <a
-                                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=7a22ca606b004c12abb377dc511c31f9"
-                                target="_blank"
-                                rel="nofollow"
-                            ></a
-                            >
-                        </p>
                     </div>
 
                     <div
@@ -419,40 +423,9 @@
                             title="Anatomy human rib cage"
                             frameborder="0"
                             allowfullscreen
-                            mozallowfullscreen="true"
-                            webkitallowfullscreen="true"
-                            allow="autoplay; fullscreen; xr-spatial-tracking"
-                            xr-spatial-tracking
-                            execution-while-out-of-viewport
-                            execution-while-not-rendered
-                            web-share
                             src="https://sketchfab.com/models/0f1aa77bf02e4d438f8630bd6c53b12e/embed?ui_theme=dark"
                         >
                         </iframe>
-                        <p>
-                            <a
-                                href="https://sketchfab.com/3d-models/anatomy-human-rib-cage-0f1aa77bf02e4d438f8630bd6c53b12e?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
-                                target="_blank"
-                                rel="nofollow"
-                            >
-                                Anatomy human rib cage
-                            </a>
-                            by
-                            <a
-                                href="https://sketchfab.com/FrancescoMilanese?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
-                                target="_blank"
-                                rel="nofollow"
-                            >
-                                FrancescoMilanese
-                            </a>
-                            on
-                            <a
-                                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0f1aa77bf02e4d438f8630bd6c53b12e"
-                                target="_blank"
-                                rel="nofollow"
-                            >Sketchfab</a
-                            >
-                        </p>
                     </div>
                 </div>
 
@@ -464,14 +437,14 @@
                             id="prev-fact-btn"
                             aria-label="Previous fact"
                         >
-                            &larr;</button
-                        >
+                            &larr;
+                        </button>
                         <button
                             id="next-fact-btn"
                             aria-label="Next fact"
                         >
-                            &rarr;</button
-                        >
+                            &rarr;
+                        </button>
                         <div class="layer-controls">
                             <select
                                 id="layer-selector"
@@ -508,242 +481,174 @@
                 </div>
             </div>
         </div>
+        
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const anatomyData = {
-                    skin: {
-                        Head: [
-                            "The skin on your eyelids is the thinnest on your body.",
-                            "Your scalp has about 100,000 hair follicles.",
-                            "Facial skin has more oil glands than any other part of your body.",
-                        ],
-                        Arms: [
-                            "The skin on your elbows is often thicker and darker due to friction and pressure.",
-                            "Goosebumps are caused by tiny muscles flexing in the skin at the base of each hair.",
-                            "Your fingerprints are unique patterns of ridges on the skin of your fingertips.",
-                        ],
-                        Torso: [
-                            "The skin on your back is among the thickest on your body.",
-                            "Your belly button is home to a whole ecosystem of bacteria.",
-                            "Stretch marks can appear on the abdomen when skin grows or shrinks quickly.",
-                        ],
-                        Legs: [
-                            "The skin on the soles of your feet is the thickest on your body.",
-                            "Shaving doesn't make hair grow back thicker; it just cuts it at a blunt angle.",
-                            "Leg skin has fewer oil glands than facial skin, making it prone to dryness.",
-                        ],
-                    },
-                    muscle: {
-                        skull: [
-                            "It takes more muscles to frown (43) than it does to smile (17).",
-                            "The masseter, or jaw muscle, is the strongest muscle by weight in the human body.",
-                            "Your eyes have muscles that are constantly moving, even when you sleep.",
-                        ],
-                        arm: [
-                            "The biceps muscle is responsible for flexing your elbow.",
-                            "The triceps, on the back of the arm, is responsible for extending your elbow.",
-                            "The muscles that control your fingers are located in your forearm.",
-                        ],
-                        torso: [
-                            "Your diaphragm is a large muscle at the base of the lungs that helps you breathe.",
-                            "The abdominal muscles, or 'abs', help protect your internal organs.",
-                            "The latissimus dorsi is one of the widest muscles in the human body, covering much of your back.",
-                        ],
-                        leg: [
-                            "The quadriceps group, on the front of the thigh, is made up of four muscles.",
-                            "The gluteus maximus, in your buttocks, is the largest muscle in your body.",
-                            "The calf muscles are essential for walking, running, and jumping.",
-                        ],
-                    },
-                    bone: {
-                        skull: [
-                            "The human skull is made up of 22 different bones, 8 in the cranium and 14 in the face.",
-                            "Of the 22 bones in the skull, only the mandible (jaw bone) is movable.",
-                            "Babies are born with soft spots (fontanelles) in their skulls that fuse together over time.",
-                        ],
-                        "rib cage": [
-                            "The rib cage protects your heart and lungs.",
-                            "Most people have 12 pairs of ribs, making 24 ribs in total.",
-                            "The bottom two pairs of ribs are called 'floating ribs' because they don't connect to the sternum.",
-                        ],
-                        arm: [
-                            "The humerus is the single bone in your upper arm.",
-                            "Your forearm is made of two bones: the radius and the ulna.",
-                            "The funny bone isn't a bone at all; it's the ulnar nerve passing over the humerus.",
-                        ],
-                        leg: [
-                            "The femur, or thigh bone, is the longest, heaviest, and strongest bone in the human body.",
-                            "The kneecap is technically called the patella.",
-                            "The two bones in your lower leg are the tibia (shin bone) and the fibula.",
-                        ],
-                    },
-                    organ: {
-                        brain: [
-                            "The human brain weighs about 3 pounds but uses 20% of the body's oxygen and calories.",
-                            "Information in the brain travels at speeds of up to 268 miles per hour.",
-                            "Your brain is more active at night than during the day.",
-                        ],
-                        heart: [
-                            "The average adult heart beats about 100,000 times each day.",
-                            "Your heart pumps about 2,000 gallons of blood every day.",
-                            "The sound of your heartbeat is caused by the heart valves opening and closing.",
-                        ],
-                        lungs: [
-                            "If you spread them out, the surface area of your lungs would be about the size of a tennis court.",
-                            "The right lung is slightly larger than the left lung to make room for the heart.",
-                            "Adults breathe about 12 to 16 times per minute when at rest.",
-                        ],
-                        stomach: [
-                            "Your stomach produces a new layer of mucous lining every two weeks to protect itself from its own acid.",
-                            "An adult stomach can hold up to 1.5 liters of food and drink.",
-                            "Food stays in your stomach for about 2 to 4 hours.",
-                        ],
-                        liver: [
-                            "The liver is the largest internal organ and can regenerate itself from as little as 25% of its tissue.",
-                            "Your liver performs over 500 different functions, including filtering toxins from your blood.",
-                            "At any given moment, your liver holds about 10% of your body's total blood.",
-                        ],
-                    },
-                };
+                async function initializeApp() {
+                    let anatomyData; 
 
-                let currentLayer = Object.keys(anatomyData)[0];
-                let selectedPart = Object.keys(anatomyData[currentLayer])[0];
-                let currentFactIndex = 0;
+                    const layerSelector = document.getElementById("layer-selector");
+                    const bodyPartSelector = document.getElementById("body-part-selector");
+                    const skullModel = document.getElementById("skull-model");
+                    const ribCageModel = document.getElementById("rib-cage-model");
+                    const controlsTitle = document.getElementById("controls-title");
+                    const factText = document.getElementById("fact-text");
+                    const prevFactBtn = document.getElementById("prev-fact-btn");
+                    const nextFactBtn = document.getElementById("next-fact-btn");
+                    const settingsBtn = document.getElementById("settings-btn");
+                    const settingsSidebar = document.getElementById("sidebar-overlay");
+                    const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
+                    const modeToggle = document.getElementById("mode-toggle");
+                    const modeIndicator = document.getElementById("mode-indicator");
+                    const jsonUpload = document.getElementById('json-upload');
+                    
+                    let currentLayer, selectedPart, currentFactIndex;
 
-                const layerSelector =
-                    document.getElementById("layer-selector");
-                const bodyPartSelector =
-                    document.getElementById("body-part-selector");
+                    function resetAppWithNewData(newData) {
+                        anatomyData = newData; 
 
-                const skullModel = document.getElementById("skull-model");
-                const ribCageModel = document.getElementById("rib-cage-model");
+                        currentLayer = Object.keys(anatomyData)[0] || '';
+                        selectedPart = anatomyData[currentLayer] ? Object.keys(anatomyData[currentLayer])[0] : '';
+                        currentFactIndex = 0;
 
-                const controlsTitle = document.getElementById("controls-title");
-                const factText = document.getElementById("fact-text");
-                const prevFactBtn = document.getElementById("prev-fact-btn");
-                const nextFactBtn = document.getElementById("next-fact-btn");
-
-                const settingsBtn = document.getElementById("settings-btn");
-                const settingsSidebar = document.getElementById("sidebar-overlay");
-                const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
-                const modeToggle = document.getElementById("mode-toggle");
-                const modeIndicator = document.getElementById("mode-indicator");
-
-                function updateDisplay() {
-                    const facts = anatomyData[currentLayer][selectedPart];
-                    factText.textContent = facts[currentFactIndex];
-                    controlsTitle.textContent = `${selectedPart} (${currentLayer})`;
-                    bodyPartSelector.value = selectedPart;
-
-                    skullModel.classList.remove("visible");
-                    ribCageModel.classList.remove("visible");
-
-                    const part = selectedPart.toLowerCase();
-
-                    if (
-                        part === "head" ||
-                        part === "skull" ||
-                        part === "brain"
-                    ) {
-                        skullModel.classList.add("visible");
-                    } else if (
-                        part === "torso" ||
-                        part === "rib cage" ||
-                        part === "heart" ||
-                        part === "lungs" ||
-                        part === "stomach" ||
-                        part === "liver"
-                    ) {
-                        ribCageModel.classList.add("visible");
+                        if (currentLayer && selectedPart) {
+                            init();
+                        } else {
+                            console.error("Invalid or empty data loaded.");
+                            factText.textContent = "Error: The loaded data file is invalid or empty.";
+                        }
                     }
-                }
+                    
+                    function updateDisplay() {
+                        const facts = anatomyData[currentLayer][selectedPart];
+                        factText.textContent = facts[currentFactIndex];
+                        controlsTitle.textContent = `${selectedPart} (${currentLayer})`;
+                        bodyPartSelector.value = selectedPart;
+                        skullModel.classList.remove("visible");
+                        ribCageModel.classList.remove("visible");
+                        const part = selectedPart.toLowerCase();
+                        if (part === "head" || part === "skull" || part === "brain") {
+                            skullModel.classList.add("visible");
+                        } else if (part === "torso" || part === "rib cage" || part === "heart" || part === "lungs" || part === "stomach" || part === "liver") {
+                            ribCageModel.classList.add("visible");
+                        }
+                    }
 
-                function renderBodyParts() {
-                    bodyPartSelector.innerHTML = "";
-                    const parts = Object.keys(anatomyData[currentLayer]);
+                    function renderBodyParts() {
+                        bodyPartSelector.innerHTML = "";
+                        const parts = Object.keys(anatomyData[currentLayer]);
+                        parts.forEach((part) => {
+                            const option = document.createElement("option");
+                            option.value = part;
+                            option.textContent = part;
+                            bodyPartSelector.appendChild(option);
+                        });
+                    }
 
-                    parts.forEach((part) => {
-                        const option = document.createElement("option");
-                        option.value = part;
-                        option.textContent = part;
-                        bodyPartSelector.appendChild(option);
+                    function renderLayerOptions() {
+                        layerSelector.innerHTML = "";
+                        const layers = Object.keys(anatomyData);
+                        layers.forEach((layer) => {
+                            const option = document.createElement("option");
+                            option.value = layer;
+                            option.textContent = layer;
+                            layerSelector.appendChild(option);
+                        });
+                    }
+
+                    layerSelector.addEventListener("change", (e) => {
+                        currentLayer = e.target.value;
+                        selectedPart = Object.keys(anatomyData[currentLayer])[0];
+                        currentFactIndex = 0;
+                        renderBodyParts();
+                        updateDisplay();
                     });
-                }
 
-                function renderLayerOptions() {
-                    const layers = Object.keys(anatomyData);
-                    layers.forEach((layer) => {
-                        const option = document.createElement("option");
-                        option.value = layer;
-                        option.textContent = layer;
-                        layerSelector.appendChild(option);
+                    bodyPartSelector.addEventListener("change", (e) => {
+                        selectedPart = e.target.value;
+                        currentFactIndex = 0;
+                        updateDisplay();
                     });
-                }
 
-                layerSelector.addEventListener("change", (e) => {
-                    currentLayer = e.target.value;
-                    selectedPart = Object.keys(anatomyData[currentLayer])[0];
-                    currentFactIndex = 0;
-                    renderBodyParts();
-                    updateDisplay();
-                });
+                    nextFactBtn.addEventListener("click", () => {
+                        const totalFacts = anatomyData[currentLayer][selectedPart].length;
+                        currentFactIndex = (currentFactIndex + 1) % totalFacts;
+                        updateDisplay();
+                    });
 
-                bodyPartSelector.addEventListener("change", (e) => {
-                    selectedPart = e.target.value;
-                    currentFactIndex = 0;
-                    updateDisplay();
-                });
+                    prevFactBtn.addEventListener("click", () => {
+                        const totalFacts = anatomyData[currentLayer][selectedPart].length;
+                        currentFactIndex = (currentFactIndex - 1 + totalFacts) % totalFacts;
+                        updateDisplay();
+                    });
 
-                nextFactBtn.addEventListener("click", () => {
-                    const totalFacts =
-                        anatomyData[currentLayer][selectedPart].length;
-                    currentFactIndex = (currentFactIndex + 1) % totalFacts;
-                    updateDisplay();
-                });
+                    settingsBtn.addEventListener("click", () => {
+                        settingsSidebar.classList.add("visible");
+                    });
 
-                prevFactBtn.addEventListener("click", () => {
-                    const totalFacts =
-                        anatomyData[currentLayer][selectedPart].length;
-                    currentFactIndex =
-                        (currentFactIndex - 1 + totalFacts) % totalFacts;
-                    updateDisplay();
-                });
-
-                settingsBtn.addEventListener("click", () => {
-                    settingsSidebar.classList.add("visible");
-                });
-
-                sidebarCloseBtn.addEventListener("click", () => {
-                    settingsSidebar.classList.remove("visible");
-                });
-
-                settingsSidebar.addEventListener("click", (e) => {
-                    if (e.target === settingsSidebar) {
+                    sidebarCloseBtn.addEventListener("click", () => {
                         settingsSidebar.classList.remove("visible");
-                    }
-                });
+                    });
 
-                modeToggle.addEventListener("change", (e) => {
-                    const isInstructor = e.target.checked;
-                    
-                    if (isInstructor) {
-                        modeIndicator.textContent = "Instructor";
-                        modeIndicator.classList.add("instructor-mode");
-                    } else {
-                        modeIndicator.textContent = "Student";
-                        modeIndicator.classList.remove("instructor-mode");
-                    }
-                    
-                    console.log(`Mode switched to: ${modeIndicator.textContent}`);
-                });
+                    settingsSidebar.addEventListener("click", (e) => {
+                        if (e.target === settingsSidebar) {
+                            settingsSidebar.classList.remove("visible");
+                        }
+                    });
 
-                function init() {
-                    renderLayerOptions();
-                    renderBodyParts();
-                    updateDisplay();
+                    modeToggle.addEventListener("change", (e) => {
+                        const isInstructor = e.target.checked;
+                        if (isInstructor) {
+                            modeIndicator.textContent = "Instructor";
+                            modeIndicator.classList.add("instructor-mode");
+                            document.body.classList.add("instructor-mode-active");
+                        } else {
+                            modeIndicator.textContent = "Student";
+                            modeIndicator.classList.remove("instructor-mode");
+                            document.body.classList.remove("instructor-mode-active");
+                        }
+                        console.log(`Mode switched to: ${modeIndicator.textContent}`);
+                    });
+                    
+                    jsonUpload.addEventListener('change', (event) => {
+                        const file = event.target.files[0];
+                        if (!file || file.type !== 'application/json') {
+                            alert('Please select a valid JSON file.');
+                            return;
+                        }
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const newAnatomyData = JSON.parse(e.target.result);
+                                console.log('Successfully loaded new data:', newAnatomyData);
+                                resetAppWithNewData(newAnatomyData);
+                            } catch (error) {
+                                alert('Error parsing JSON file. Please check the file format.');
+                                console.error('JSON Parse Error:', error);
+                            }
+                        };
+                        reader.readAsText(file);
+                    });
+
+                    function init() {
+                        renderLayerOptions();
+                        renderBodyParts();
+                        updateDisplay();
+                    }
+
+                    try {
+                        const response = await fetch('./src/facts/sample_facts.json');
+                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        const initialData = await response.json();
+                        resetAppWithNewData(initialData);
+                    } catch (error) {
+                        console.error("Failed to initialize the application:", error);
+                        document.body.innerHTML = `<div style="color: red; padding: 20px;"><h2>Error: Could not load initial data.</h2><p>Please make sure the file './facts/sample_facts.json' exists and is accessible.</p></div>`;
+                    }
                 }
 
-                init();
+                initializeApp();
             });
         </script>
     </body>
