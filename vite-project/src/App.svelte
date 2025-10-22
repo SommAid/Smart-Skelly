@@ -1,3 +1,7 @@
+<script>
+    import { nonpassive } from "svelte/legacy";
+
+</script>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -158,8 +162,7 @@
             }
             
             #upload-container {
-                display: none; /* Hidden by default */
-                margin-top: 1.5rem;
+                display: none
             }
             body.instructor-mode-active #upload-container {
                 display: block; /* Show the container */
@@ -168,12 +171,11 @@
                 display: inline-block;
                 background-color: var(--accent-color);
                 color: white;
-                padding: 10px 15px;
+                padding: 14px 15px;
                 border-radius: 8px;
                 cursor: pointer;
                 font-weight: 500;
                 text-align: center;
-                margin-top: 10px;
                 transition: background-color 0.2s ease;
             }
             .upload-btn:hover {
@@ -181,6 +183,7 @@
             }
             #json-upload {
                 display: none;
+                margin: none;
             }
 
             /* Fun Facts Card */
@@ -388,11 +391,6 @@
             <div class="grid-container">
                 <div class="card">
                     <h2>Environment Information</h2>
-                    <div id="upload-container">
-                        <p>Upload a new set of anatomy facts.</p>
-                        <label for="json-upload" class="upload-btn">Upload JSON File</label>
-                        <input type="file" id="json-upload" accept="application/json">
-                    </div>
                 </div>
 
                 <div class="card">
@@ -451,6 +449,10 @@
                                 class="layer-select"
                             ></select>
                         </div>
+                        <div id="upload-container">
+                          <label for="json-upload" class="upload-btn">Upload JSON File</label>
+                          <input type="file" id="json-upload" accept="application/json">
+                      </div>
                     </div>
                 </div>
 
