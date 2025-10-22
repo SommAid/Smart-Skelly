@@ -17,7 +17,6 @@
                 --incorrect-color: #dc3545;
             }
 
-            /* Basic Reset */
             *,
             *::before,
             *::after {
@@ -674,18 +673,14 @@
                     >
                 </div>
                 <div id="quiz-questions-container" style="display: none;">
-                    <div id="quiz-question-content">
-                        <!-- Quiz questions will be injected here -->
-                    </div>
+                    <div id="quiz-question-content"></div>
                     <button
                         id="next-question-btn"
                         class="quiz-button"
                         style="display:none;">Next Question</button
                     >
                 </div>
-                <div id="quiz-results" style="display: none;">
-                    <!-- Quiz results will be shown here -->
-                </div>
+                <div id="quiz-results" style="display: none;"></div>
             </div>
         </div>
 
@@ -877,7 +872,6 @@
                     jsonUpload.addEventListener("change", (event) => {
                         const file = event.target.files[0];
                         if (!file || file.type !== "application/json") {
-                            // Using a custom modal/alert in a real app would be better
                             console.warn("Please select a valid JSON file.");
                             return;
                         }
@@ -896,7 +890,6 @@
                         reader.readAsText(file);
                     });
 
-                    // --- Quiz Functionality ---
                     function openQuizModal() {
                         populateQuizForm();
                         quizModalOverlay.classList.add("visible");
@@ -904,14 +897,13 @@
 
                     function closeQuizModal() {
                         quizModalOverlay.classList.remove("visible");
-                        // Reset quiz state
                         setTimeout(() => {
                             quizViewContainer.style.display = "block";
                             quizQuestionsContainer.style.display = "none";
                             quizResults.style.display = "none";
                             quizQuestionContent.innerHTML = "";
                             quizResults.innerHTML = "";
-                        }, 300); // delay to allow fade out animation
+                        }, 300);
                     }
 
                     function populateQuizForm() {
@@ -1106,7 +1098,6 @@
                     }
 
                     try {
-                        // Corrected the fetch path
                         const response = await fetch(
                             "./src/facts/sample_facts.json",
                         );
