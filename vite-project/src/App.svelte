@@ -1101,7 +1101,7 @@
 
                     try {
                         const response = await fetch(
-                            "./public/sample_facts.json", // Make sure this path is correct
+                            "./sample_facts.json", // Make sure this path is correct
                         );
                         if (!response.ok)
                             throw new Error(
