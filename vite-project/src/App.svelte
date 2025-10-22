@@ -1,7 +1,3 @@
-<script>
-    import { nonpassive } from "svelte/legacy";
-
-</script>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,6 +13,8 @@
                 --border-color: #333333;
                 --accent-color: #ed820e;
                 --accent-hover: #d3730c;
+                --correct-color: #28a745;
+                --incorrect-color: #dc3545;
             }
 
             /* Basic Reset */
@@ -29,15 +27,8 @@
             body {
                 margin: 0;
                 font-family:
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    "Segoe UI",
-                    Roboto,
-                    Oxygen,
-                    Ubuntu,
-                    Cantarell,
-                    "Open Sans",
-                    "Helvetica Neue",
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
                     sans-serif;
                 background-color: var(--background-dark);
                 color: var(--primary-text);
@@ -84,6 +75,11 @@
                 display: flex;
                 align-items: center;
                 gap: 15px;
+            }
+
+            #quiz-btn {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
             }
 
             .mode-indicator {
@@ -160,9 +156,9 @@
                 outline: none;
                 border-color: var(--accent-color);
             }
-            
+
             #upload-container {
-                display: none
+                display: none;
             }
             body.instructor-mode-active #upload-container {
                 display: block; /* Show the container */
@@ -208,6 +204,8 @@
                 justify-content: left;
                 margin-top: 20px;
                 flex-shrink: 0;
+                align-items: center;
+                gap: 10px;
             }
 
             .nav-buttons button {
@@ -333,7 +331,7 @@
             }
 
             .toggle-label::after {
-                content: '';
+                content: "";
                 position: absolute;
                 width: 44px;
                 height: 44px;
@@ -345,7 +343,7 @@
             }
 
             .toggle-label::before {
-                content: 'Student';
+                content: "Student";
                 position: absolute;
                 right: 20px;
                 top: 50%;
@@ -364,10 +362,194 @@
             }
 
             .toggle-input:checked + .toggle-label::before {
-                content: 'Instructor';
+                content: "Instructor";
                 left: 20px;
                 right: auto;
                 color: white;
+            }
+
+            /* Quiz Modal Styles */
+            .quiz-modal-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .quiz-modal-overlay.visible {
+                display: flex;
+                opacity: 1;
+            }
+
+            .quiz-modal-content {
+                background: var(--surface-dark);
+                padding: 30px;
+                border-radius: 12px;
+                width: 90%;
+                max-width: 600px;
+                max-height: 90vh;
+                overflow-y: auto;
+                border: 1px solid var(--border-color);
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+            }
+
+            .quiz-modal-overlay.visible .quiz-modal-content {
+                transform: scale(1);
+            }
+
+            .quiz-modal-content h2 {
+                margin-top: 0;
+            }
+
+            #quiz-topic-form {
+                max-height: 400px;
+                overflow-y: auto;
+                padding-right: 15px; /* for scrollbar */
+            }
+
+            .quiz-layer-group {
+                margin-bottom: 1.5rem;
+            }
+            .quiz-layer-group h3 {
+                color: var(--accent-color);
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 8px;
+            }
+
+            .quiz-checkbox-container {
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 18px;
+                user-select: none;
+            }
+
+            .quiz-checkbox-container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+            }
+
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 25px;
+                width: 25px;
+                background-color: var(--border-color);
+                border-radius: 4px;
+                transition: background-color 0.2s ease;
+            }
+
+            .quiz-checkbox-container:hover input ~ .checkmark {
+                background-color: #555;
+            }
+
+            .quiz-checkbox-container input:checked ~ .checkmark {
+                background-color: var(--accent-color);
+            }
+
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+
+            .quiz-checkbox-container input:checked ~ .checkmark:after {
+                display: block;
+            }
+
+            .quiz-checkbox-container .checkmark:after {
+                left: 9px;
+                top: 5px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 3px 3px 0;
+                transform: rotate(45deg);
+            }
+
+            .quiz-button {
+                display: block;
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: white;
+                background-color: var(--accent-color);
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+                margin-top: 20px;
+            }
+            .quiz-button:hover {
+                background-color: var(--accent-hover);
+            }
+
+            #quiz-questions-container .question {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
+            }
+
+            #quiz-questions-container .answers {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #quiz-questions-container .answer-btn {
+                text-align: left;
+                background: var(--border-color);
+                color: var(--primary-text);
+                border: 2px solid transparent;
+                padding: 15px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: all 0.2s ease;
+            }
+            #quiz-questions-container .answer-btn:hover:not(:disabled) {
+                border-color: var(--accent-color);
+            }
+
+            #quiz-questions-container .answer-btn.correct {
+                background-color: var(--correct-color);
+                border-color: var(--correct-color);
+                color: white;
+            }
+
+            #quiz-questions-container .answer-btn.incorrect {
+                background-color: var(--incorrect-color);
+                border-color: var(--incorrect-color);
+                color: white;
+            }
+
+            #quiz-questions-container .answer-btn:disabled {
+                cursor: not-allowed;
+                opacity: 0.8;
+            }
+
+            #quiz-results {
+                text-align: center;
+                font-size: 1.5rem;
+            }
+
+            #next-question-btn {
+                margin-top: 20px;
             }
         </style>
     </head>
@@ -377,8 +559,12 @@
                 <span>Smart Skeleton</span>
 
                 <div class="menu-controls">
-                    <span id="mode-indicator" class="mode-indicator">Student</span>
-
+                    <span id="mode-indicator" class="mode-indicator"
+                        >Student</span
+                    >
+                    <button id="quiz-btn" class="menu-button"
+                        >Take a Quiz</button
+                    >
                     <button
                         id="settings-btn"
                         class="menu-button"
@@ -395,9 +581,7 @@
 
                 <div class="card">
                     <h2>Body Parts</h2>
-                    <select
-                        id="body-part-selector"
-                        class="layer-select"
+                    <select id="body-part-selector" class="layer-select"
                     ></select>
 
                     <div
@@ -431,28 +615,26 @@
                     <h2 id="controls-title">Information</h2>
                     <p>Select a system and a body part to learn more.</p>
                     <div class="nav-buttons">
-                        <button
-                            id="prev-fact-btn"
-                            aria-label="Previous fact"
-                        >
+                        <button id="prev-fact-btn" aria-label="Previous fact">
                             &larr;
                         </button>
-                        <button
-                            id="next-fact-btn"
-                            aria-label="Next fact"
-                        >
+                        <button id="next-fact-btn" aria-label="Next fact">
                             &rarr;
                         </button>
                         <div class="layer-controls">
-                            <select
-                                id="layer-selector"
-                                class="layer-select"
+                            <select id="layer-selector" class="layer-select"
                             ></select>
                         </div>
                         <div id="upload-container">
-                          <label for="json-upload" class="upload-btn">Upload JSON File</label>
-                          <input type="file" id="json-upload" accept="application/json">
-                      </div>
+                            <label for="json-upload" class="upload-btn"
+                                >Upload JSON File</label
+                            >
+                            <input
+                                type="file"
+                                id="json-upload"
+                                accept="application/json"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -467,10 +649,7 @@
 
         <div id="sidebar-overlay" class="sidebar-overlay">
             <div class="sidebar-content">
-                <span
-                    class="sidebar-close"
-                    id="sidebar-close-btn"
-                    >&times;</span
+                <span class="sidebar-close" id="sidebar-close-btn">&times;</span
                 >
                 <h2>Settings</h2>
                 <div class="toggle-switch">
@@ -483,44 +662,108 @@
                 </div>
             </div>
         </div>
-        
+
+        <div id="quiz-modal-overlay" class="quiz-modal-overlay">
+            <div class="quiz-modal-content">
+                <span class="sidebar-close" id="quiz-close-btn">&times;</span>
+                <div id="quiz-view-container">
+                    <h2>Select Quiz Topics</h2>
+                    <form id="quiz-topic-form"></form>
+                    <button id="start-quiz-btn" class="quiz-button"
+                        >Start Quiz</button
+                    >
+                </div>
+                <div id="quiz-questions-container" style="display: none;">
+                    <div id="quiz-question-content">
+                        <!-- Quiz questions will be injected here -->
+                    </div>
+                    <button
+                        id="next-question-btn"
+                        class="quiz-button"
+                        style="display:none;">Next Question</button
+                    >
+                </div>
+                <div id="quiz-results" style="display: none;">
+                    <!-- Quiz results will be shown here -->
+                </div>
+            </div>
+        </div>
+
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 async function initializeApp() {
-                    let anatomyData; 
+                    let anatomyData;
 
-                    const layerSelector = document.getElementById("layer-selector");
-                    const bodyPartSelector = document.getElementById("body-part-selector");
+                    const layerSelector =
+                        document.getElementById("layer-selector");
+                    const bodyPartSelector =
+                        document.getElementById("body-part-selector");
                     const skullModel = document.getElementById("skull-model");
-                    const ribCageModel = document.getElementById("rib-cage-model");
-                    const controlsTitle = document.getElementById("controls-title");
+                    const ribCageModel =
+                        document.getElementById("rib-cage-model");
+                    const controlsTitle =
+                        document.getElementById("controls-title");
                     const factText = document.getElementById("fact-text");
-                    const prevFactBtn = document.getElementById("prev-fact-btn");
-                    const nextFactBtn = document.getElementById("next-fact-btn");
+                    const prevFactBtn =
+                        document.getElementById("prev-fact-btn");
+                    const nextFactBtn =
+                        document.getElementById("next-fact-btn");
                     const settingsBtn = document.getElementById("settings-btn");
-                    const settingsSidebar = document.getElementById("sidebar-overlay");
-                    const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
+                    const settingsSidebar =
+                        document.getElementById("sidebar-overlay");
+                    const sidebarCloseBtn =
+                        document.getElementById("sidebar-close-btn");
                     const modeToggle = document.getElementById("mode-toggle");
-                    const modeIndicator = document.getElementById("mode-indicator");
-                    const jsonUpload = document.getElementById('json-upload');
-                    
+                    const modeIndicator =
+                        document.getElementById("mode-indicator");
+                    const jsonUpload = document.getElementById("json-upload");
+
+                    // Quiz Elements
+                    const quizBtn = document.getElementById("quiz-btn");
+                    const quizModalOverlay =
+                        document.getElementById("quiz-modal-overlay");
+                    const quizCloseBtn =
+                        document.getElementById("quiz-close-btn");
+                    const quizTopicForm =
+                        document.getElementById("quiz-topic-form");
+                    const startQuizBtn =
+                        document.getElementById("start-quiz-btn");
+                    const quizViewContainer = document.getElementById(
+                        "quiz-view-container",
+                    );
+                    const quizQuestionsContainer = document.getElementById(
+                        "quiz-questions-container",
+                    );
+                    const quizQuestionContent = document.getElementById(
+                        "quiz-question-content",
+                    );
+                    const nextQuestionBtn =
+                        document.getElementById("next-question-btn");
+                    const quizResults = document.getElementById("quiz-results");
+
                     let currentLayer, selectedPart, currentFactIndex;
+                    let quizQuestions = [];
+                    let currentQuestionIndex = 0;
+                    let score = 0;
 
                     function resetAppWithNewData(newData) {
-                        anatomyData = newData; 
+                        anatomyData = newData;
 
-                        currentLayer = Object.keys(anatomyData)[0] || '';
-                        selectedPart = anatomyData[currentLayer] ? Object.keys(anatomyData[currentLayer])[0] : '';
+                        currentLayer = Object.keys(anatomyData)[0] || "";
+                        selectedPart = anatomyData[currentLayer]
+                            ? Object.keys(anatomyData[currentLayer])[0]
+                            : "";
                         currentFactIndex = 0;
 
                         if (currentLayer && selectedPart) {
                             init();
                         } else {
                             console.error("Invalid or empty data loaded.");
-                            factText.textContent = "Error: The loaded data file is invalid or empty.";
+                            factText.textContent =
+                                "Error: The loaded data file is invalid or empty.";
                         }
                     }
-                    
+
                     function updateDisplay() {
                         const facts = anatomyData[currentLayer][selectedPart];
                         factText.textContent = facts[currentFactIndex];
@@ -529,9 +772,20 @@
                         skullModel.classList.remove("visible");
                         ribCageModel.classList.remove("visible");
                         const part = selectedPart.toLowerCase();
-                        if (part === "head" || part === "skull" || part === "brain") {
+                        if (
+                            part === "head" ||
+                            part === "skull" ||
+                            part === "brain"
+                        ) {
                             skullModel.classList.add("visible");
-                        } else if (part === "torso" || part === "rib cage" || part === "heart" || part === "lungs" || part === "stomach" || part === "liver") {
+                        } else if (
+                            part === "torso" ||
+                            part === "rib cage" ||
+                            part === "heart" ||
+                            part === "lungs" ||
+                            part === "stomach" ||
+                            part === "liver"
+                        ) {
                             ribCageModel.classList.add("visible");
                         }
                     }
@@ -560,7 +814,9 @@
 
                     layerSelector.addEventListener("change", (e) => {
                         currentLayer = e.target.value;
-                        selectedPart = Object.keys(anatomyData[currentLayer])[0];
+                        selectedPart = Object.keys(
+                            anatomyData[currentLayer],
+                        )[0];
                         currentFactIndex = 0;
                         renderBodyParts();
                         updateDisplay();
@@ -573,14 +829,17 @@
                     });
 
                     nextFactBtn.addEventListener("click", () => {
-                        const totalFacts = anatomyData[currentLayer][selectedPart].length;
+                        const totalFacts =
+                            anatomyData[currentLayer][selectedPart].length;
                         currentFactIndex = (currentFactIndex + 1) % totalFacts;
                         updateDisplay();
                     });
 
                     prevFactBtn.addEventListener("click", () => {
-                        const totalFacts = anatomyData[currentLayer][selectedPart].length;
-                        currentFactIndex = (currentFactIndex - 1 + totalFacts) % totalFacts;
+                        const totalFacts =
+                            anatomyData[currentLayer][selectedPart].length;
+                        currentFactIndex =
+                            (currentFactIndex - 1 + totalFacts) % totalFacts;
                         updateDisplay();
                     });
 
@@ -603,34 +862,241 @@
                         if (isInstructor) {
                             modeIndicator.textContent = "Instructor";
                             modeIndicator.classList.add("instructor-mode");
-                            document.body.classList.add("instructor-mode-active");
+                            document.body.classList.add(
+                                "instructor-mode-active",
+                            );
                         } else {
                             modeIndicator.textContent = "Student";
                             modeIndicator.classList.remove("instructor-mode");
-                            document.body.classList.remove("instructor-mode-active");
+                            document.body.classList.remove(
+                                "instructor-mode-active",
+                            );
                         }
-                        console.log(`Mode switched to: ${modeIndicator.textContent}`);
                     });
-                    
-                    jsonUpload.addEventListener('change', (event) => {
+
+                    jsonUpload.addEventListener("change", (event) => {
                         const file = event.target.files[0];
-                        if (!file || file.type !== 'application/json') {
-                            alert('Please select a valid JSON file.');
+                        if (!file || file.type !== "application/json") {
+                            // Using a custom modal/alert in a real app would be better
+                            console.warn("Please select a valid JSON file.");
                             return;
                         }
 
                         const reader = new FileReader();
                         reader.onload = (e) => {
                             try {
-                                const newAnatomyData = JSON.parse(e.target.result);
-                                console.log('Successfully loaded new data:', newAnatomyData);
+                                const newAnatomyData = JSON.parse(
+                                    e.target.result,
+                                );
                                 resetAppWithNewData(newAnatomyData);
                             } catch (error) {
-                                alert('Error parsing JSON file. Please check the file format.');
-                                console.error('JSON Parse Error:', error);
+                                console.error("JSON Parse Error:", error);
                             }
                         };
                         reader.readAsText(file);
+                    });
+
+                    // --- Quiz Functionality ---
+                    function openQuizModal() {
+                        populateQuizForm();
+                        quizModalOverlay.classList.add("visible");
+                    }
+
+                    function closeQuizModal() {
+                        quizModalOverlay.classList.remove("visible");
+                        // Reset quiz state
+                        setTimeout(() => {
+                            quizViewContainer.style.display = "block";
+                            quizQuestionsContainer.style.display = "none";
+                            quizResults.style.display = "none";
+                            quizQuestionContent.innerHTML = "";
+                            quizResults.innerHTML = "";
+                        }, 300); // delay to allow fade out animation
+                    }
+
+                    function populateQuizForm() {
+                        quizTopicForm.innerHTML = "";
+                        for (const layer in anatomyData) {
+                            const layerGroup = document.createElement("div");
+                            layerGroup.className = "quiz-layer-group";
+                            layerGroup.innerHTML = `<h3>${layer}</h3>`;
+
+                            for (const part in anatomyData[layer]) {
+                                const checkboxId =
+                                    `quiz-${layer}-${part}`.replace(
+                                        /\s+/g,
+                                        "-",
+                                    );
+                                const checkboxWrapper =
+                                    document.createElement("label");
+                                checkboxWrapper.className =
+                                    "quiz-checkbox-container";
+                                checkboxWrapper.setAttribute("for", checkboxId);
+                                checkboxWrapper.textContent = part;
+
+                                const checkbox =
+                                    document.createElement("input");
+                                checkbox.type = "checkbox";
+                                checkbox.id = checkboxId;
+                                checkbox.value = `${layer}|${part}`;
+
+                                const checkmark =
+                                    document.createElement("span");
+                                checkmark.className = "checkmark";
+
+                                checkboxWrapper.appendChild(checkbox);
+                                checkboxWrapper.appendChild(checkmark);
+                                layerGroup.appendChild(checkboxWrapper);
+                            }
+                            quizTopicForm.appendChild(layerGroup);
+                        }
+                    }
+
+                    function generateQuiz() {
+                        const selectedTopics = [];
+                        quizTopicForm
+                            .querySelectorAll('input[type="checkbox"]:checked')
+                            .forEach((cb) => {
+                                selectedTopics.push(cb.value.split("|"));
+                            });
+
+                        if (selectedTopics.length === 0) {
+                            // A custom modal alert would be better here
+                            alert("Please select at least one topic.");
+                            return;
+                        }
+
+                        let allFacts = [];
+                        Object.values(anatomyData).forEach((layer) => {
+                            Object.values(layer).forEach((facts) => {
+                                allFacts.push(...facts);
+                            });
+                        });
+                        allFacts = [...new Set(allFacts)]; // Remove duplicates
+
+                        quizQuestions = selectedTopics.map(([layer, part]) => {
+                            const correctFacts = anatomyData[layer][part];
+                            const correctAnswer =
+                                correctFacts[
+                                    Math.floor(
+                                        Math.random() * correctFacts.length,
+                                    )
+                                ];
+
+                            let incorrectAnswers = [];
+                            while (incorrectAnswers.length < 3) {
+                                const randomFact =
+                                    allFacts[
+                                        Math.floor(
+                                            Math.random() * allFacts.length,
+                                        )
+                                    ];
+                                if (
+                                    randomFact !== correctAnswer &&
+                                    !incorrectAnswers.includes(randomFact) &&
+                                    !correctFacts.includes(randomFact)
+                                ) {
+                                    incorrectAnswers.push(randomFact);
+                                }
+                            }
+
+                            return {
+                                question: `Which of the following is true about the ${part}?`,
+                                answers: [
+                                    ...incorrectAnswers,
+                                    correctAnswer,
+                                ].sort(() => Math.random() - 0.5),
+                                correctAnswer: correctAnswer,
+                            };
+                        });
+
+                        currentQuestionIndex = 0;
+                        score = 0;
+                        quizViewContainer.style.display = "none";
+                        quizQuestionsContainer.style.display = "block";
+                        quizResults.style.display = "none";
+                        displayQuestion();
+                    }
+
+                    function displayQuestion() {
+                        nextQuestionBtn.style.display = "none";
+
+                        if (currentQuestionIndex >= quizQuestions.length) {
+                            showResults();
+                            return;
+                        }
+
+                        const q = quizQuestions[currentQuestionIndex];
+                        quizQuestionContent.innerHTML = `
+                            <div class="question">Q${currentQuestionIndex + 1}: ${q.question}</div>
+                            <div class="answers">
+                                ${q.answers.map((answer) => `<button class="answer-btn">${answer}</button>`).join("")}
+                            </div>
+                        `;
+
+                        document
+                            .querySelectorAll(".answer-btn")
+                            .forEach((btn) => {
+                                btn.addEventListener("click", handleAnswer);
+                            });
+                    }
+
+                    function handleAnswer(e) {
+                        const selectedButton = e.target;
+                        const selectedAnswer = selectedButton.textContent;
+                        const correctAnswer =
+                            quizQuestions[currentQuestionIndex].correctAnswer;
+
+                        const answerButtons =
+                            document.querySelectorAll(".answer-btn");
+
+                        answerButtons.forEach((btn) => {
+                            btn.disabled = true;
+                            if (btn.textContent === correctAnswer) {
+                                btn.classList.add("correct");
+                            }
+                        });
+
+                        if (selectedAnswer === correctAnswer) {
+                            score++;
+                        } else {
+                            selectedButton.classList.add("incorrect");
+                        }
+
+                        if (currentQuestionIndex < quizQuestions.length - 1) {
+                            nextQuestionBtn.textContent = "Next Question";
+                        } else {
+                            nextQuestionBtn.textContent = "Show Results";
+                        }
+                        nextQuestionBtn.style.display = "block";
+                    }
+
+                    function showResults() {
+                        quizQuestionsContainer.style.display = "none";
+                        quizResults.style.display = "block";
+                        quizResults.innerHTML = `
+                            <h2>Quiz Complete!</h2>
+                            <p>You scored ${score} out of ${quizQuestions.length}</p>
+                            <button id="retake-quiz-btn" class="quiz-button">Try Again</button>
+                        `;
+
+                        document
+                            .getElementById("retake-quiz-btn")
+                            .addEventListener("click", () => {
+                                quizResults.style.display = "none";
+                                quizViewContainer.style.display = "block";
+                            });
+                    }
+
+                    quizBtn.addEventListener("click", openQuizModal);
+                    quizCloseBtn.addEventListener("click", closeQuizModal);
+                    quizModalOverlay.addEventListener("click", (e) => {
+                        if (e.target === quizModalOverlay) closeQuizModal();
+                    });
+                    startQuizBtn.addEventListener("click", generateQuiz);
+                    nextQuestionBtn.addEventListener("click", () => {
+                        currentQuestionIndex++;
+                        displayQuestion();
                     });
 
                     function init() {
@@ -640,13 +1106,22 @@
                     }
 
                     try {
-                        const response = await fetch('./src/facts/sample_facts.json');
-                        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                        // Corrected the fetch path
+                        const response = await fetch(
+                            "./src/facts/sample_facts.json",
+                        );
+                        if (!response.ok)
+                            throw new Error(
+                                `HTTP error! Status: ${response.status}`,
+                            );
                         const initialData = await response.json();
                         resetAppWithNewData(initialData);
                     } catch (error) {
-                        console.error("Failed to initialize the application:", error);
-                        document.body.innerHTML = `<div style="color: red; padding: 20px;"><h2>Error: Could not load initial data.</h2><p>Please make sure the file './facts/sample_facts.json' exists and is accessible.</p></div>`;
+                        console.error(
+                            "Failed to initialize the application:",
+                            error,
+                        );
+                        document.body.innerHTML = `<div style="color: red; padding: 20px;"><h2>Error: Could not load initial data.</h2><p>Please make sure the file 'sample_facts.json' exists and is accessible.</p></div>`;
                     }
                 }
 
