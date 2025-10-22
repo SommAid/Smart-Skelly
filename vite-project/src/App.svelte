@@ -96,9 +96,16 @@
                 flex-grow: 1;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-template-rows: 1fr 1fr;
+                grid-template-rows: 1fr;
                 gap: 20px;
                 padding: 20px;
+                overflow: hidden;
+            }
+
+            .left-column {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
                 overflow: hidden;
             }
 
@@ -121,7 +128,6 @@
                 flex-shrink: 0;
             }
 
-            /* Layer Controls Card */
             .layer-controls {
                 display: flex;
                 flex-direction: column;
@@ -160,7 +166,7 @@
                 display: none;
             }
             body.instructor-mode-active #upload-container {
-                display: block; /* Show the container */
+                display: block;
             }
             .upload-btn {
                 display: inline-block;
@@ -181,8 +187,8 @@
                 margin: none;
             }
 
-            /* Fun Facts Card */
             .fun-facts-card {
+                flex-grow: 1;
                 justify-content: space-between;
             }
 
@@ -227,7 +233,6 @@
                 background-color: #444444;
             }
 
-            /* 3D model viewer */
             .model-viewer {
                 display: none;
                 flex-grow: 1;
@@ -573,9 +578,41 @@
                     </button>
                 </div>
             </div>
+
             <div class="grid-container">
-                <div class="card">
-                    <h2>Environment Information</h2>
+                <div class="left-column">
+                    <div class="card controls-card">
+                        <h2 id="controls-title">Controls</h2>
+                        <div class="nav-buttons">
+                            <button id="prev-fact-btn" aria-label="Previous fact">
+                                &larr;
+                            </button>
+                            <button id="next-fact-btn" aria-label="Next fact">
+                                &rarr;
+                            </button>
+                            <div class="layer-controls">
+                                <select id="layer-selector" class="layer-select"
+                                ></select>
+                            </div>
+                            <div id="upload-container">
+                                <label for="json-upload" class="upload-btn"
+                                    >Upload JSON File</label
+                                >
+                                <input
+                                    type="file"
+                                    id="json-upload"
+                                    accept="application/json"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card fun-facts-card">
+                        <h2 id="fun-fact-title">Skeleton Display</h2>
+                        <div class="fact-display">
+                            <p id="fact-text">Welcome to the Anatomy Explorer!</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -608,39 +645,13 @@
                         >
                         </iframe>
                     </div>
-                </div>
-
-                <div class="card controls-card">
-                    <h2 id="controls-title">Information</h2>
-                    <p>Select a system and a body part to learn more.</p>
-                    <div class="nav-buttons">
-                        <button id="prev-fact-btn" aria-label="Previous fact">
-                            &larr;
-                        </button>
-                        <button id="next-fact-btn" aria-label="Next fact">
-                            &rarr;
-                        </button>
-                        <div class="layer-controls">
-                            <select id="layer-selector" class="layer-select"
-                            ></select>
-                        </div>
-                        <div id="upload-container">
-                            <label for="json-upload" class="upload-btn"
-                                >Upload JSON File</label
-                            >
-                            <input
-                                type="file"
-                                id="json-upload"
-                                accept="application/json"
-                            />
-                        </div>
+                    <div id="leg-model" class="sketchfab-embed-wrapper model-viewer">
+                      <iframe title="Leg anterior muscles" frameborder="0" allowfullscreen src="https://sketchfab.com/models/28f28c361da743139b6eea6b9ba68f59/embed">
+                      </iframe>
                     </div>
-                </div>
-
-                <div class="card fun-facts-card">
-                    <h2>Fun Fact</h2>
-                    <div class="fact-display">
-                        <p id="fact-text">Welcome to the Anatomy Explorer!</p>
+                    <div id="arm-model" class="sketchfab-embed-wrapper model-viewer">
+                        <iframe title="Anatomy - Hand and arm bones" frameborder="0" allowfullscreen src="https://sketchfab.com/models/719f6ae9f03b4246b9105fb3301a6f02/embed">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -689,51 +700,34 @@
                 async function initializeApp() {
                     let anatomyData;
 
-                    const layerSelector =
-                        document.getElementById("layer-selector");
-                    const bodyPartSelector =
-                        document.getElementById("body-part-selector");
+                    // Get elements with updating UI features
+                    const layerSelector = document.getElementById("layer-selector");
+                    const bodyPartSelector = document.getElementById("body-part-selector");
                     const skullModel = document.getElementById("skull-model");
-                    const ribCageModel =
-                        document.getElementById("rib-cage-model");
-                    const controlsTitle =
-                        document.getElementById("controls-title");
+                    const ribCageModel = document.getElementById("rib-cage-model");
+                    const legModel = document.getElementById("leg-model");
+                    const armModel = document.getElementById("arm-model");
+                    const funfactTitle = document.getElementById("fun-fact-title"); // Corrected ID
                     const factText = document.getElementById("fact-text");
-                    const prevFactBtn =
-                        document.getElementById("prev-fact-btn");
-                    const nextFactBtn =
-                        document.getElementById("next-fact-btn");
+                    const prevFactBtn = document.getElementById("prev-fact-btn");
+                    const nextFactBtn = document.getElementById("next-fact-btn");
                     const settingsBtn = document.getElementById("settings-btn");
-                    const settingsSidebar =
-                        document.getElementById("sidebar-overlay");
-                    const sidebarCloseBtn =
-                        document.getElementById("sidebar-close-btn");
+                    const settingsSidebar = document.getElementById("sidebar-overlay");
+                    const sidebarCloseBtn = document.getElementById("sidebar-close-btn");
                     const modeToggle = document.getElementById("mode-toggle");
-                    const modeIndicator =
-                        document.getElementById("mode-indicator");
+                    const modeIndicator = document.getElementById("mode-indicator");
                     const jsonUpload = document.getElementById("json-upload");
 
                     // Quiz Elements
                     const quizBtn = document.getElementById("quiz-btn");
-                    const quizModalOverlay =
-                        document.getElementById("quiz-modal-overlay");
-                    const quizCloseBtn =
-                        document.getElementById("quiz-close-btn");
-                    const quizTopicForm =
-                        document.getElementById("quiz-topic-form");
-                    const startQuizBtn =
-                        document.getElementById("start-quiz-btn");
-                    const quizViewContainer = document.getElementById(
-                        "quiz-view-container",
-                    );
-                    const quizQuestionsContainer = document.getElementById(
-                        "quiz-questions-container",
-                    );
-                    const quizQuestionContent = document.getElementById(
-                        "quiz-question-content",
-                    );
-                    const nextQuestionBtn =
-                        document.getElementById("next-question-btn");
+                    const quizModalOverlay = document.getElementById("quiz-modal-overlay");
+                    const quizCloseBtn = document.getElementById("quiz-close-btn");
+                    const quizTopicForm = document.getElementById("quiz-topic-form");
+                    const startQuizBtn = document.getElementById("start-quiz-btn");
+                    const quizViewContainer = document.getElementById("quiz-view-container");
+                    const quizQuestionsContainer = document.getElementById("quiz-questions-container");
+                    const quizQuestionContent = document.getElementById("quiz-question-content");
+                    const nextQuestionBtn = document.getElementById("next-question-btn");
                     const quizResults = document.getElementById("quiz-results");
 
                     let currentLayer, selectedPart, currentFactIndex;
@@ -762,16 +756,19 @@
                     function updateDisplay() {
                         const facts = anatomyData[currentLayer][selectedPart];
                         factText.textContent = facts[currentFactIndex];
-                        controlsTitle.textContent = `${selectedPart} (${currentLayer})`;
+                        funfactTitle.textContent = `Skeleton Display : ${selectedPart} (${currentLayer})`;
                         bodyPartSelector.value = selectedPart;
+
+                        // Hide all models
                         skullModel.classList.remove("visible");
                         ribCageModel.classList.remove("visible");
+                        legModel.classList.remove("visible");
+                        armModel.classList.remove("visible");
+
                         const part = selectedPart.toLowerCase();
-                        if (
-                            part === "head" ||
-                            part === "skull" ||
-                            part === "brain"
-                        ) {
+
+                        // Show the correct model
+                        if (part === "head" || part === "skull" || part === "brain") {
                             skullModel.classList.add("visible");
                         } else if (
                             part === "torso" ||
@@ -782,8 +779,13 @@
                             part === "liver"
                         ) {
                             ribCageModel.classList.add("visible");
+                        } else if (part === "leg" || part === "legs") { // Added condition
+                            legModel.classList.add("visible");
+                        } else if (part === "arm" || part === "arms") { // Added condition
+                            armModel.classList.add("visible");
                         }
                     }
+                    // --- END updateDisplay MODIFICATION ---
 
                     function renderBodyParts() {
                         bodyPartSelector.innerHTML = "";
@@ -1099,7 +1101,7 @@
 
                     try {
                         const response = await fetch(
-                            "./src/facts/sample_facts.json",
+                            "./src/facts/sample_facts.json", // Make sure this path is correct
                         );
                         if (!response.ok)
                             throw new Error(
@@ -1115,7 +1117,6 @@
                         document.body.innerHTML = `<div style="color: red; padding: 20px;"><h2>Error: Could not load initial data.</h2><p>Please make sure the file 'sample_facts.json' exists and is accessible.</p></div>`;
                     }
                 }
-
                 initializeApp();
             });
         </script>
